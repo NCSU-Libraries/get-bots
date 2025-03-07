@@ -1,0 +1,4 @@
+venv/
+data/asn.csv
+bot-output*
+*.log
