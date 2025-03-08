@@ -60,28 +60,25 @@ def process_log_lines(log_lines, rails):
             if ip_data[ip]['last_hit'] is None or timestamp > ip_data[ip]['last_hit']:
                 ip_data[ip]['last_hit'] = timestamp
 
-    # Determine the most common normalized request pattern for each IP address
+    # Convert ip_data to a list of dictionaries
+    output_data = []
     for ip, data in ip_data.items():
+        # Determine the most common normalized request pattern for each IP address
         request_counter = Counter(data['normalized_requests'])
         most_common_request, most_common_request_count = request_counter.most_common(1)[0]
         data['most_common_request'] = most_common_request
         data['most_common_request_count'] = most_common_request_count
-
-    # Convert ip_data to a list of dictionaries
-    output_data = []
-    for ip, data in ip_data.items():
         user_agents = list(data['user_agents'])
-        user_agent_changed = len(user_agents) > 1
         output_data.append({
             'ip': ip,
             'count': data['count'],
             'user_agents': user_agents,
-            'user_agent_changed': user_agent_changed,
             'most_common_request': data['most_common_request'],
             'most_common_request_count': data['most_common_request_count'],
             'first_hit': data['first_hit'],
             'last_hit': data['last_hit']
         })
+
     return output_data
 
 def normalize_request(request):
