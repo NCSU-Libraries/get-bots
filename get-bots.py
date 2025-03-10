@@ -168,7 +168,7 @@ def process_output_data(ip_data, interval_tree, asn_info, output_format=None):
                 range_first_hit[ip_range] = first_hit
             if ip_range not in range_last_hit or last_hit > range_last_hit[ip_range]:
                 range_last_hit[ip_range] = last_hit
-            if ip_range not in worst_offenders or count > next(item for item in ip_data if item['ip'] == worst_offenders[ip_range])['count']:
+            if ip_range not in worst_offenders or count > worst_offender_count[ip_range]:
                 worst_offenders[ip_range] = ip
                 worst_offender_count[ip_range] = count
 
