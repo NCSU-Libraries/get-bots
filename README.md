@@ -20,7 +20,7 @@ python get-bots.py production.log -r -o csv
 ```
 ## Output data
 
-The script defaults to outputting the top ten "bot swarms" in json format. By specifying '-o csv' or '-o json' the script will output all IP ranges found into a csv or json file. Example of data collected:
+The `get-bots.py` script defaults to outputting the top ten "bot swarms" in json format. By specifying '-o csv' or '-o json' the script will output all IP ranges found into a csv or json file. Example of data collected:
 ```
 {
         "asn_ip_range": "51.222.0.0-51.222.255.255",
