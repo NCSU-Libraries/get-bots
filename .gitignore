@@ -1,4 +1,6 @@
 venv/
-data/asn.csv
-bot-output*
+*.csv
+*.json
 *.log
+*.txt
+!requirements.txt
