@@ -1,29 +1,29 @@
-This project processes the output of Apache logs (Combined format) logs to identify bots based on ASN ranges from ASN data downloaded from [IPinfo.io](https://ipinfo.io/account/data-downloads). 
+This project consists of a python script that analyzes Apache logs (combined format) or Rails logs to identify bots based on ASN ranges from data downloaded from [IPinfo.io](https://ipinfo.io). 
 
 
 ## Usage
 
 ```
-python get_bots.py accessfile [-r] [-o output-format]
+python get_bots.py accessfile [-r] [-g] [-d] [-s] [-o output-format]
 ```
-- accessfile: path to your http access or rails log
-- r: process a rails log (log level must be set to debug)
-- o: this option allows you to dump entire data output into a csv file or json file (specify json or csv as the output format). 
+- accessfile: path to your HTTP access or Rails log
+- r: process a Rails log (log level must be set to debug)
+- o: this option allows you to dump entire data output into a CSV file or JSON file (specify `json` or `csv` as the output format). 
 - g: group data by ASN or by smaller IP ranges within an ASN (by default will group by total ASN). Accepted inputs: `ip_range`; `asn`
-- d: provide a date value if your log file contains requests for several days but you just want data output for one day. Format must be `dd/MMM/yyyy` if processing Apache logs and `yyyy-mm-dd` if processing rails logs.
+- d: provide a date value if your log file contains requests for several days but you just want data output for one day. Format must be `dd/MMM/yyyy` if processing Apache logs and `yyyy-mm-dd` if processing Rails logs.
 - s: this will generate additional statistical analysis (currently only works when grouping data by IP range subnets)
 
 Basic example:
 ```
 python get_bots.py secure-access.log  # secure-access.log usually found at /var/log/httpd/$(hostname)-secure_access_ssl.log
 ```
-Example of processing a rails log and sending the output to a csv file:
+Example of processing a Rails log and sending the output to a CSV file:
 ```
 python get_bots.py production.log -r -o csv
 ```
 ## Output data
 
-The script defaults to outputting the results in JSON. This default output consists of overview data, a country by country breakdown, a break down for each ASN, and then a further breakdown of each subnet within that ASN. By specifying '-o csv' or '-o json' the script will output into a CSV or JSON file. If you choose to output into a CSV file, the overview data and country by country breakdown is not included, because of the limited flexibility of CSV. The following is an example of data collected by default:
+The script defaults to outputting the results in JSON. This default output consists of overview data, a country by country breakdown, a break down for each ASN, and then a further breakdown of each subnet within that ASN. By specifying `-o csv` or `-o json` the script will output into a CSV or JSON file. If you choose to output into a CSV file, the overview data and country by country breakdown is not included, because of the limited flexibility of CSV. The following is an example of data collected by default:
 ```
 {
     "Total Requests": 216742,
@@ -102,7 +102,7 @@ The script defaults to outputting the results in JSON. This default output consi
     ]
 }
 ```
-If you choose to group by ip_range the data will output like the following. Additional data on user agent strings and common request patterns can be captured by adding the `-s` input option:
+If you choose to group by `ip_range` the data will output like the following example. Additional data on user agent strings and common request patterns can be captured by adding the `-s` input option:
 ```
 {
         "asn_ip_range": "20.160.0.0-20.175.255.255",
@@ -132,7 +132,7 @@ If you choose to group by ip_range the data will output like the following. Addi
 ```
 Currently, breakdown by country is only available in the default group by ASN option.
 
-## requirements/venv setup
+## Installing dependencies
 ```
 # sync project with uv
 uv sync
@@ -151,8 +151,8 @@ This will output a list of subnets for blocking purposes. Here's the full script
 uv run get_bots.py example_http_access_log.log | jq -r '.["ASN Data"][0].Subnets[]'
 ```
 
-## warnings
-This code has not been fully tested or vetted, especially the rails output option.  
+## Warnings
+This code has not been fully tested or vetted, especially the Rails output option.  
 
-## acknowledgments
+## Acknowledgments
 This work was greatly inspired/informed by the work of Adam Constabaris, [for example here](https://github.com/NCSU-Libraries/bot-ip-scanner), and more generally the work of the Bot Blocking Brigade at NC State Libraries. 
